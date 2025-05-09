@@ -1,0 +1,111 @@
+mat-label {
+  color: #000;
+  font-family: "Public Sans";
+  font-size: 14px;
+}
+
+input::placeholder {
+  font-size: 14px;
+}
+
+mat-select.mat-mdc-select {
+  font-size: 14px;
+}
+
+.height-small mat-select.mat-mdc-select {
+  font-size: 0.75em;
+}
+
+.height-width-small mat-select.mat-mdc-select {
+  font-size: 0.72em;
+}
+
+mat-form-field.mat-mdc-form-field {
+  font-family: "Public Sans";
+  .mat-mdc-text-field-wrapper {
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  &.height-35 .mat-mdc-text-field-wrapper {
+    height: 33px;
+  }
+
+  &.height-small .mat-mdc-text-field-wrapper {
+    height: 35px;
+    width: 130px !important;
+  }
+
+  &.height-width-small .mat-mdc-text-field-wrapper {
+    height: 35px;
+    width: 90px !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    height: 1.75rem;
+
+    ::before {
+      display: block;
+      height: 0px;
+    }
+
+    .mat-mdc-form-field-error-wrapper {
+      top: 6px;
+      padding: 0;
+    }
+  }
+
+  mat-error.mat-mdc-form-field-error {
+    color: #ff5252;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    border-color: #d9d9d9 !important;
+  }
+
+  &.height-small .mdc-notched-outline__leading,
+  &.height-small .mdc-notched-outline__trailing {
+    border-color: #adadad !important;
+    border-width: 2px !important;
+  }
+}
+
+.mdc-text-field--outlined.mdc-text-field--invalid:not(
+    .mdc-text-field--disabled
+  ) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    border-color: #ff5252 !important;
+  }
+}
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+  .mdc-notched-outline__trailing,
+  .mdc-notched-outline__leading {
+    border-width: 1px !important;
+  }
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 10px !important;
+}
+
+// custom snack bar
+.mat-mdc-snack-bar-container {
+  &.warning-snackbar {
+    --mdc-snackbar-container-color: rgb(241, 132, 69);
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  &.error-snackbar {
+    --mdc-snackbar-container-color: rgb(246, 107, 107);
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  &.success-snackbar {
+    --mdc-snackbar-container-color: rgb(9, 183, 9);
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}

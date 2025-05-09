@@ -1,0 +1,20 @@
+mat-chip.mat-mdc-chip.mat-mdc-standard-chip {
+  border: none;
+  background: #e5e6e8;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled)
+  .mdc-evolution-chip__text-label.mat-mdc-chip-action-label {
+  color: #8e919c;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.mat-mdc-standard-chip .mdc-evolution-chip__action--primary {
+  padding: 0px 6px !important;
+  &:before {
+    border: none !important;
+  }
+}
