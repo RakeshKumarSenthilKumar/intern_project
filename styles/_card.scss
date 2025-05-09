@@ -1,0 +1,40 @@
+mat-card.mat-mdc-card {
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 10px 0 rgba(105, 109, 126, 0.1);
+  border: none;
+
+  mat-card-header {
+    background: #f9f9f9;
+    height: 44px;
+    padding: 14px;
+    border-bottom: 1.5px solid #fcc844;
+    display: flex;
+    align-items: center;
+  }
+
+  mat-card-content {
+    padding: 14px;
+    h5 {
+      margin-bottom: 8px;
+    }
+    p {
+      color: #8e919c;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+  }
+
+  mat-card-actions {
+    background: #f9f9f9;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+}
+
+mat-card-content.card-scrollable {
+  max-height: 30vh;
+  overflow: auto;
+}
