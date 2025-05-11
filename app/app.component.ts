@@ -5,37 +5,37 @@ import {
   effect,
   inject,
 } from '@angular/core';
-import { AuthComponent } from './core/components/auth.component';
-import { LayoutComponent } from './core/components/layout/layout.component';
-import { AuthStore } from './core/stores/auth.store';
-import { AccountStore } from './core/stores/account.store';
-import { AppStore } from './core/stores/app.store';
-import { UserStore } from './core/stores/user.store';
-import { GlobalLoaderComponent } from './core/components/global-loader.component';
+import { LoginComponent } from './shared/components/login.component';
+import { ShellComponent } from './shared/components/shell/shell.component';
+import { SessionStore } from './shared/stores/session.store';
+import { ProfileStore } from './shared/stores/profile.store';
+import { SystemStore } from './shared/stores/system.store';
+import { TeamStore } from './shared/stores/team.store';
+import { SpinnerComponent } from './shared/components/spinner.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'main-root',
   standalone: true,
-  imports: [LayoutComponent, AuthComponent, GlobalLoaderComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [ShellComponent, LoginComponent, SpinnerComponent],
+  templateUrl: './main.component.html',
+  styleUrl: './main.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  #authState = inject(AuthStore);
-  #accountStore = inject(AccountStore);
-  #appStore = inject(AppStore);
-  #userStore = inject(UserStore);
+export class MainComponent {
+  #sessionStore = inject(SessionStore);
+  #profileStore = inject(ProfileStore);
+  #systemStore = inject(SystemStore);
+  #teamStore = inject(TeamStore);
 
-  showLoading = computed(() => this.#appStore.showLoading());
-  appReady = computed(() => this.#appStore.isPrerequisiteReady());
+  loadingVisible = computed(() => this.#systemStore.getLoadingState());
+  systemInitialized = computed(() => this.#systemStore.checkInitialization());
 
   constructor() {
     effect(() => {
-      if (this.#authState.userAuthenticated()) {
-        this.#accountStore.loadAccounts().subscribe(() => {
-          this.#appStore.markAccountsReady();
-          this.#userStore.getUsers().subscribe();
+      if (this.#sessionStore.isLoggedIn()) {
+        this.#profileStore.fetchProfiles().subscribe(() => {
+          this.#systemStore.setProfilesLoaded();
+          this.#teamStore.loadTeamData().subscribe();
         });
       }
     });
