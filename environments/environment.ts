@@ -1,29 +1,29 @@
-export const environment = {
-  production: true,
-  apiConfig: {
-    microsoftGraphUri: {
-      uri: 'https://graph.microsoft.com/',
-      scopes: ['user.read'],
+export const appEnv = {
+  isLive: true,
+  endpointSettings: {
+    cloudApi: {
+      baseUrl: 'https://api.newcloudservice.com/',
+      accessScopes: ['user.profile.read'],
     },
-    glasswallApi: {
-      uri: 'http://localhost:5141/',
-      scopes: ['api://glasswall-api/access-as-user'],
+    backendService: {
+      baseUrl: 'http://localhost:8080/',
+      accessScopes: ['api://backend-service/user-access'],
     },
   },
-  msalConfig: {
-    auth: {
-      clientId: '5c4fb191-87f1-4118-aa9b-6486782246eb',
-      authority:
-        'https://login.microsoftonline.com/832ebef3-7cc8-484d-90fa-3a367f861f4c/oauth2/authorize',
+  authSettings: {
+    authentication: {
+      appId: 'abc12345-xyz6-7890-qwer-1234567890ef',
+      authorityUrl:
+        'https://login.newauthprovider.com/12345678-abcd-efgh-ijkl-9876543210aa/oauth2/authorize',
     },
-    scopes: [
-      'api://glasswall-api/access-as-user',
-      'profile',
-      'email',
-      'user.read',
+    requestedScopes: [
+      'api://backend-service/user-access',
+      'profile.info',
+      'email.address',
+      'user.profile.read',
     ],
-    cache: {
-      cacheLocation: 'localStorage',
+    cacheOptions: {
+      storageMethod: 'localStorage',
     },
   },
 };
