@@ -1,73 +1,74 @@
 import { FormGroup } from '@angular/forms';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function setControlTouched(formGroup: FormGroup) {
-  Object.keys(formGroup.controls).forEach((key) => {
-    formGroup.get(key)?.markAsTouched();
-    formGroup.get(key)?.updateValueAndValidity();
+export function markAllFieldsTouched(group: FormGroup) {
+  Object.keys(group.controls).forEach((fieldName) => {
+    const field = group.get(fieldName);
+    field?.markAsTouched();
+    field?.updateValueAndValidity();
   });
 }
 
-export function validateFormControl(control: AbstractControl) {
-  const errors = {} as ValidationErrors;
-  const controlErrors = control.errors;
+export function checkValidationIssues(field: AbstractControl) {
+  const validationIssues = {} as ValidationErrors;
+  const fieldErrors = field.errors;
 
-  if (!control.value && controlErrors?.['required']) {
-    errors['required'] = true;
+  if (!field.value && fieldErrors?.['required']) {
+    validationIssues['required'] = true;
   }
   if (
-    controlErrors?.['minlength'] &&
-    control.value.length < controlErrors?.['minlength']
+    fieldErrors?.['minlength'] &&
+    field.value.length < fieldErrors?.['minlength']
   ) {
-    errors['minLength'] = {
-      requiredLength: controlErrors?.['minlength'],
-      actualLength: control.value.length,
+    validationIssues['tooShort'] = {
+      requiredLength: fieldErrors?.['minlength'],
+      actualLength: field.value.length,
     };
   }
   if (
-    controlErrors?.['maxlength'] &&
-    control.value.length > controlErrors?.['maxlength']
+    fieldErrors?.['maxlength'] &&
+    field.value.length > fieldErrors?.['maxlength']
   ) {
-    errors['maxLength'] = {
-      requiredLength: controlErrors?.['maxlength'],
-      actualLength: control.value.length,
+    validationIssues['tooLong'] = {
+      requiredLength: fieldErrors?.['maxlength'],
+      actualLength: field.value.length,
     };
   }
   if (
-    controlErrors?.['pattern'] &&
-    control.value &&
-    !new RegExp(controlErrors?.['pattern']).test(control.value)
+    fieldErrors?.['pattern'] &&
+    field.value &&
+    !new RegExp(fieldErrors?.['pattern']).test(field.value)
   ) {
-    errors['pattern'] = true;
+    validationIssues['patternMismatch'] = true;
   }
 
-  return Object.keys(errors).length ? errors : null;
+  return Object.keys(validationIssues).length ? validationIssues : null;
 }
 
-export function getErrorMessage(
-  errorKey: string,
-  control: AbstractControl,
-  label = '',
-  errorMessages: Record<string, string> = {},
+export function generateValidationMessage(
+  issueKey: string,
+  field: AbstractControl,
+  labelText = '',
+  customMessages: Record<string, string> = {},
 ) {
-  let controlName = '';
-  if (control.parent) {
-    controlName = Object.keys(control.parent.controls).find(key => control.parent?.get(key) === control) || '';
+  let fieldKey = '';
+  if (field.parent) {
+    fieldKey = Object.keys(field.parent.controls).find(key => field.parent?.get(key) === field) || '';
   }
 
-  const controlErrors = control.errors;
-  if (errorMessages[errorKey]) {
-    return errorMessages[errorKey];
-  } else if (errorKey === 'required') {
-    return `${label} is required`;
-  } else if (errorKey === 'minlength') {
-    return `${label} should be atleast ${controlErrors?.['minlength']['requiredLength']} character`;
-  } else if (errorKey === 'maxlength') {
-    return `${label} cannot be more than ${controlErrors?.['maxlength']?.['requiredLength']} character`;
-  }else if (errorKey === 'pattern' && controlName ==='name') { 
-    return `Invalid ${label} pattern only letters are allowed`;
-  }else if (errorKey === 'pattern') {
-    return `Invalid ${label} pattern`;
+  const currentErrors = field.errors;
+  if (customMessages[issueKey]) {
+    return customMessages[issueKey];
+  } else if (issueKey === 'required') {
+    return `${labelText} is required`;
+  } else if (issueKey === 'minlength') {
+    return `${labelText} should be at least ${currentErrors?.['minlength']['requiredLength']} characters`;
+  } else if (issueKey === 'maxlength') {
+    return `${labelText} cannot exceed ${currentErrors?.['maxlength']?.['requiredLength']} characters`;
+  } else if (issueKey === 'pattern' && fieldKey === 'name') {
+    return `Invalid ${labelText} format — only letters are allowed`;
+  } else if (issueKey === 'pattern') {
+    return `Invalid ${labelText} format`;
   }
   return;
 }
