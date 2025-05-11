@@ -1,31 +1,31 @@
 import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { DashboardComponent } from './dashboard.component';
 
-describe('AppComponent', () => {
+describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [DashboardComponent],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should create the dashboard', () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    const dashboard = fixture.componentInstance;
+    expect(dashboard).toBeTruthy();
   });
 
-  it(`should have the 'glasswall-ui' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('glasswall-ui');
+  it(`should have the 'admin-portal' title`, () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    const dashboard = fixture.componentInstance;
+    expect(dashboard.title).toEqual('admin-portal');
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(DashboardComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, glasswall-ui',
+      'Hello, admin-portal',
     );
   });
 });
