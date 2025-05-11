@@ -1,113 +1,112 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { sessionGuard } from './shared/guards/session.guard';
 
-export const routes: Routes = [
+export const appRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/dashboard/dashboard.component').then(
-        (co) => co.DashboardComponent,
+      import('./features/home/home.component').then(
+        (m) => m.HomeComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'users',
+    path: 'members',
     loadComponent: () =>
-      import('./pages/users/users.component').then(
-        (co) => co.UsersComponent,
+      import('./features/members/members.component').then(
+        (m) => m.MembersComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'account',
+    path: 'profile',
     loadComponent: () =>
-      import('./pages/account/account.component').then(
-        (co) => co.AccountComponent,
+      import('./features/profile/profile.component').then(
+        (m) => m.ProfileComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
     children: [
       {
-        path: 'manage/:id',
+        path: 'edit/:userId',
         loadComponent: () =>
-          import('./pages/manage-accounts/manage-accounts.component').then(
-            (m) => m.ManageAccountsComponent,
+          import('./features/edit-profile/edit-profile.component').then(
+            (m) => m.EditProfileComponent,
           ),
-        canActivate: [authGuard],
+        canActivate: [sessionGuard],
       },
     ],
   },
   {
-    path: 'project',
+    path: 'workspace',
     loadComponent: () =>
-      import('./pages/project/project.component').then(
-        (co) => co.ProjectComponent,
+      import('./features/workspace/workspace.component').then(
+        (m) => m.WorkspaceComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
     children: [
       {
-        path: 'manage/:projectId',
+        path: 'edit/:workspaceId',
         loadComponent: () =>
-          import('./pages/manage-project/manage-project.component').then(
-            (co) => co.ManageProjectComponent,
+          import('./features/edit-workspace/edit-workspace.component').then(
+            (m) => m.EditWorkspaceComponent,
           ),
-        canActivate: [authGuard],
+        canActivate: [sessionGuard],
       },
     ],
   },
   {
-    path: 'project/:accountId',
+    path: 'workspace/:profileId',
     loadComponent: () =>
-      import('./pages/project/project.component').then(
-        (co) => co.ProjectComponent,
+      import('./features/workspace/workspace.component').then(
+        (m) => m.WorkspaceComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'sprint',
+    path: 'milestone',
     loadComponent: () =>
-      import('./pages/sprint/sprint.component').then(
-        (co) => co.SprintComponent,
+      import('./features/milestone/milestone.component').then(
+        (m) => m.MilestoneComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'sprint/:accountId',
+    path: 'milestone/:profileId',
     loadComponent: () =>
-      import('./pages/sprint/sprint.component').then(
-        (co) => co.SprintComponent,
+      import('./features/milestone/milestone.component').then(
+        (m) => m.MilestoneComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'sprint/manage/:projectId/:sprintId',
+    path: 'milestone/edit/:workspaceId/:milestoneId',
     loadComponent: () =>
-      import('./pages/manage-sprint/manage-sprint.component').then(
-        (co) => co.ManageSprintComponent,
+      import('./features/edit-milestone/edit-milestone.component').then(
+        (m) => m.EditMilestoneComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'tasks',
+    path: 'activities',
     loadComponent: () =>
-      import('./pages/task/task.component').then(
-        (co) => co.TaskComponent,
+      import('./features/activity/activity.component').then(
+        (m) => m.ActivityComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
-    path: 'template',
+    path: 'blueprint',
     loadComponent: () =>
-      import('./pages/manage-template/manage-template.component').then(
-        (co) => co.ManageTemplateComponent,
+      import('./features/edit-blueprint/edit-blueprint.component').then(
+        (m) => m.EditBlueprintComponent,
       ),
-    canActivate: [authGuard],
+    canActivate: [sessionGuard],
   },
   {
     path: '**',
     loadComponent: () =>
-      import('./pages/not-found/not-found.component').then(
-        (co) => co.NotFoundComponent,
+      import('./features/page-missing/page-missing.component').then(
+        (m) => m.PageMissingComponent,
       ),
-  }
-
+  },
 ];
