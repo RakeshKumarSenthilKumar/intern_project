@@ -1,37 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
-@import "styles/scrollbar";
-@import "styles/heading";
-@import "styles/dialog";
-@import "styles/card";
-@import "styles/chips";
-@import "styles/paginator";
-@import "styles/mat-form-field";
+/* You can add universal styles to this file, and also import other styling modules */
+@import "global-styles/scroll-controls";
+@import "global-styles/title-fonts";
+@import "global-styles/popup-box";
+@import "global-styles/info-card";
+@import "global-styles/tag-elements";
+@import "global-styles/page-controller";
+@import "global-styles/input-container";
 
 html,
 body {
   height: 100%;
-  font-family: "Public Sans", Roboto, "Helvetica Neue", sans-serif !important;
+  font-family: "Open Sans", Arial, "Segoe UI", sans-serif !important;
 }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-// TODO will move to separate file
-.mat-mdc-menu-panel {
-  background-color: white !important;
-  .mat-mdc-menu-content {
+// NOTE: This will be migrated to a dedicated SCSS module
+.core-menu-panel {
+  background-color: #ffffff !important;
+  .core-menu-content {
     padding: 4px 0px;
   }
-  .mat-mdc-menu-item {
+  .core-menu-option {
     min-height: 30px;
-    .mat-mdc-menu-item-text {
+    .core-menu-option-label {
       font-weight: normal !important;
     }
   }
 }
 
-.small-icon-button {
+.icon-square-button {
   width: 24px !important;
   height: 24px !important;
   padding: 0px !important;
@@ -45,17 +45,17 @@ body {
     height: 16px;
     font-size: 16px;
 
-    &.add-icon {
-      background-color: #ddddf4;
-      color: #696ee7;
+    &.icon-add {
+      background-color: #e0e0f7;
+      color: #5b60e5;
     }
 
-    &.edit-icon {
-      color: #fcc844;
+    &.icon-edit {
+      color: #ffcc55;
     }
 
-    &.close-icon {
-      color: #f90505;
+    &.icon-close {
+      color: #f00000;
     }
 
     svg {
@@ -64,7 +64,7 @@ body {
     }
   }
 
-  .mat-mdc-button-touch-target {
+  .core-touch-target {
     width: 24px !important;
     height: 24px !important;
   }
