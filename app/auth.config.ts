@@ -1,27 +1,27 @@
 import {
-  withEnabledBlockingInitialNavigation,
-  withDisabledInitialNavigation,
+  withEnabledBlockingInitialNavigation as enableInitialNav,
+  withDisabledInitialNavigation as disableInitialNav,
 } from '@angular/router';
 import {
-  MsalInterceptorConfiguration,
-  MsalGuardConfiguration,
+  MsalInterceptorConfiguration as AuthInterceptorConfig,
+  MsalGuardConfiguration as AuthGuardConfig,
 } from '@azure/msal-angular';
 import {
-  LogLevel,
-  IPublicClientApplication,
-  PublicClientApplication,
-  BrowserCacheLocation,
-  InteractionType,
-  BrowserUtils,
+  LogLevel as LogSeverity,
+  IPublicClientApplication as IAuthClient,
+  PublicClientApplication as AuthClient,
+  BrowserCacheLocation as CacheStore,
+  InteractionType as AuthInteraction,
+  BrowserUtils as BrowserHelper,
 } from '@azure/msal-browser';
 import { environment } from '../environments/environment.development';
 
-// export function loggerCallback(logLevel: LogLevel, message: string) {
-//   console.log(message);
+// export function customLogger(level: LogSeverity, msg: string) {
+//   console.log(msg);
 // }
 
-export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication({
+export function createAuthClient(): IAuthClient {
+  return new AuthClient({
     auth: {
       clientId: environment.msalConfig.auth.clientId,
       authority: environment.msalConfig.auth.authority,
@@ -29,48 +29,49 @@ export function MSALInstanceFactory(): IPublicClientApplication {
       postLogoutRedirectUri: '/',
     },
     cache: {
-      cacheLocation: BrowserCacheLocation.LocalStorage,
+      cacheLocation: CacheStore.LocalStorage,
     },
     system: {
-      allowNativeBroker: false, // Disables WAM Broker
+      allowNativeBroker: false,
       loggerOptions: {
-        // loggerCallback,
-        logLevel: environment.production ? LogLevel.Error : LogLevel.Verbose,
+        // loggerCallback: customLogger,
+        logLevel: environment.production ? LogSeverity.Error : LogSeverity.Verbose,
         piiLoggingEnabled: false,
       },
     },
   });
 }
 
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const protectedResourceMap = new Map<string, string[]>();
-  protectedResourceMap.set(
+export function createInterceptorConfig(): AuthInterceptorConfig {
+  const apiScopesMap = new Map<string, string[]>();
+
+  apiScopesMap.set(
     environment.apiConfig.microsoftGraphUri.uri,
     environment.apiConfig.microsoftGraphUri.scopes,
   );
 
-  protectedResourceMap.set(
+  apiScopesMap.set(
     environment.apiConfig.glasswallApi.uri,
     environment.apiConfig.glasswallApi.scopes,
   );
 
   return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap,
+    interactionType: AuthInteraction.Redirect,
+    protectedResourceMap: apiScopesMap,
   };
 }
 
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+export function createGuardConfig(): AuthGuardConfig {
   return {
-    interactionType: InteractionType.Redirect,
+    interactionType: AuthInteraction.Redirect,
     authRequest: {
       scopes: [...environment.msalConfig.scopes],
     },
-    loginFailedRoute: '/login-failed',
+    loginFailedRoute: '/login-failure',
   };
 }
 
-export const initialNavigation =
-  !BrowserUtils.isInIframe() && !BrowserUtils.isInPopup()
-    ? withEnabledBlockingInitialNavigation() // Set to enabledBlocking to use Angular Universal
-    : withDisabledInitialNavigation();
+export const startupNavigation =
+  !BrowserHelper.isInIframe() && !BrowserHelper.isInPopup()
+    ? enableInitialNav()
+    : disableInitialNav();
